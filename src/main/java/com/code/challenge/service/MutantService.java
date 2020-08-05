@@ -13,7 +13,8 @@ import java.util.Stack;
 public class MutantService {
     public boolean isMutant(String[] dnaMap) {
         Integer rows = isMutantByRow(dnaMap);
-        return rows  > 1;
+        Integer columns = isMutantByColumn(dnaMap);
+        return rows + columns  > 1;
     }
 
     private Integer isMutantByRow(String[] dnaMap) {
@@ -33,6 +34,27 @@ public class MutantService {
                     rowStack.clear();
                 }
                 if (rowStack.size() >= 4) coincidences++;
+            }
+        }
+        return coincidences;
+    }
+
+    private Integer isMutantByColumn(String[] dna) {
+        log.info("Analizando columnas");
+        int coincidences = 0;
+        for (String row : dna) {
+            Stack<Character> columnStack = new Stack<>();
+            columnStack.push(row.charAt(0));
+            for (int j = 1; j < dna.length; j++) {
+                if (columnStack.isEmpty()) {
+                    columnStack.push(row.charAt(j - 1));
+                }
+                if (row.charAt(j) == columnStack.peek()) {
+                    columnStack.push(row.charAt(j));
+                } else {
+                    columnStack.clear();
+                }
+                if (columnStack.size() >= 4) coincidences++;
             }
         }
         return coincidences;
