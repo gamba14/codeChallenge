@@ -14,7 +14,10 @@ public class MutantService {
     public boolean isMutant(String[] dnaMap) {
         Integer rows = isMutantByRow(dnaMap);
         Integer columns = isMutantByColumn(dnaMap);
-        return rows + columns  > 1;
+        Integer diagonalDown = isMutantByDiagonalDown(dnaMap);
+        Integer diagonalUp = isMutantByDiagonalUp(dnaMap);
+
+        return rows + columns + diagonalDown + diagonalUp > 1;
     }
 
     private Integer isMutantByRow(String[] dnaMap) {
@@ -56,6 +59,51 @@ public class MutantService {
                 }
                 if (columnStack.size() >= 4) coincidences++;
             }
+        }
+        return coincidences;
+    }
+
+    private Integer isMutantByDiagonalDown(String[] dna) {
+        log.info("Analizando diagonal descendente");
+        int width = dna[0].length();
+        int coincidences = 0;
+        Stack<Character> diagonalStack = new Stack<>();
+        for (int i = 0; i < width - 3; i++) {
+            for (int j = 0; j < width - i; j++) {
+                if (diagonalStack.isEmpty()) {
+                    log.debug("{}", dna[i].charAt(j));
+                    diagonalStack.push(dna[i].charAt(j));
+                }
+                System.out.println(dna[i + j].charAt(j));
+                if (dna[i + j].charAt(j) == diagonalStack.peek()) {
+                    diagonalStack.push(dna[i + j].charAt(j));
+                } else {
+                    diagonalStack.clear();
+                }
+                if (diagonalStack.size() >= 4) coincidences++;
+            }
+            diagonalStack.clear();
+        }
+        return coincidences;
+    }
+
+    private Integer isMutantByDiagonalUp(String[] dna) {
+        log.info("Analizando diagonales ascendente");
+        int width = dna[0].length();
+        int coincidences = 0;
+        Stack<Character> diagonalStack = new Stack<>();
+        for (int i = 1; i < width - 3; i++) {
+            for (int j = 0; j < width - i; j++) {
+                if (diagonalStack.isEmpty()) {
+                    diagonalStack.push(dna[j].charAt(i + j));
+                }
+                if (dna[j].charAt(i + j) == diagonalStack.peek()) {
+                    diagonalStack.push(dna[j].charAt(i + j));
+                } else {
+                    diagonalStack.clear();
+                }
+            }
+            if (diagonalStack.size() >= 4) coincidences++;
         }
         return coincidences;
     }
