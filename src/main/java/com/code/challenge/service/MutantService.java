@@ -45,20 +45,21 @@ public class MutantService {
     private Integer isMutantByColumn(String[] dna) {
         log.info("Analizando columnas");
         int coincidences = 0;
-        for (String row : dna) {
-            Stack<Character> columnStack = new Stack<>();
-            columnStack.push(row.charAt(0));
-            for (int j = 1; j < dna.length; j++) {
+        Stack<Character> columnStack = new Stack<>();
+        for (int i = 0; i < dna.length; i++) {
+            columnStack.push(dna[0].charAt(i));
+            for (int j = 0; j < dna.length - 1; j++) {
                 if (columnStack.isEmpty()) {
-                    columnStack.push(row.charAt(j - 1));
+                    columnStack.push(dna[j+1].charAt(i));
                 }
-                if (row.charAt(j) == columnStack.peek()) {
-                    columnStack.push(row.charAt(j));
+                if (dna[j+1].charAt(i) == columnStack.peek()) {
+                    columnStack.push(dna[j+1].charAt(i));
                 } else {
                     columnStack.clear();
                 }
                 if (columnStack.size() >= 4) coincidences++;
             }
+            columnStack.clear();
         }
         return coincidences;
     }
@@ -74,7 +75,6 @@ public class MutantService {
                     log.debug("{}", dna[i].charAt(j));
                     diagonalStack.push(dna[i].charAt(j));
                 }
-                System.out.println(dna[i + j].charAt(j));
                 if (dna[i + j].charAt(j) == diagonalStack.peek()) {
                     diagonalStack.push(dna[i + j].charAt(j));
                 } else {
