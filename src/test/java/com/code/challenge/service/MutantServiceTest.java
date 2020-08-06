@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Agustin Gambirassi
  **/
 @SpringBootTest
-public class MutanServiceTest {
+public class MutantServiceTest {
 
     @Autowired
     private MutantService mutantService;
