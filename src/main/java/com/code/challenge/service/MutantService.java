@@ -10,7 +10,9 @@ import java.util.Stack;
  **/
 @Service
 @Slf4j
-public class MutantService {
+public class MutantService implements IMutantService{
+
+    @Override
     public boolean isMutant(String[] dnaMap) {
         Integer rows = isMutantByRow(dnaMap);
         Integer columns = isMutantByColumn(dnaMap);
