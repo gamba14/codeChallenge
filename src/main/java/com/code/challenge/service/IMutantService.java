@@ -5,4 +5,5 @@ package com.code.challenge.service;
  **/
 public interface IMutantService {
     boolean isMutant(String[] dnaMap);
+    boolean isValid(String[] dnaMap);
 }

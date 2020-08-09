@@ -22,13 +22,15 @@ public class MutantResource {
     }
 
     @PostMapping("/analize")
-    private ResponseEntity<String> analizeDna(@RequestBody MutantMapDTO dto){
+    private ResponseEntity<String> analizeDna(@RequestBody MutantMapDTO dto) {
+        if (!mutantService.isValid(dto.getDnaMap()))
+            return new ResponseEntity<>("Formato no valido", HttpStatus.BAD_REQUEST);
         String result = mutantService.isMutant(dto.getDnaMap()) ? "Mutante" : "No mutante";
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ExceptionHandler({Exception.class})
-    private ResponseEntity<String> exceptionHandler(){
+    private ResponseEntity<String> exceptionHandler() {
         return new ResponseEntity<>("Hubo un error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

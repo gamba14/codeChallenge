@@ -3,6 +3,7 @@ package com.code.challenge.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -11,6 +12,13 @@ import java.util.Stack;
 @Service
 @Slf4j
 public class MutantService implements IMutantService{
+
+    final String pattern = "[ATCG]+\\w";
+
+    @Override
+    public boolean isValid(String[] dnaMap) {
+        return Arrays.stream(dnaMap).allMatch(x -> x.matches(pattern));
+    }
 
     @Override
     public boolean isMutant(String[] dnaMap) {
